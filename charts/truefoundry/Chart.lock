@@ -1,6 +1,6 @@
 dependencies:
 - name: tfy-llm-gateway
   repository: oci://ghcr.io/deeajayi/tfy-sandbox-helm
-  version: 0.5.0
-digest: sha256:4523f932443dabf5b03b9fb735552bc1c621180edf733482bdf23e74e1ebce2c
-generated: "2026-07-04T16:50:33.632339883Z"
+  version: 0.3.0
+digest: sha256:2fd23a7ffec654d221b464d27342eb8dbf928ab329c50c60c389c2bcdc9200d9
+generated: "2026-07-04T16:57:46.179471281Z"
