@@ -1,10 +1,11 @@
 # truefoundry and tfy-llm-gateway are released from their OWN
-# truefoundry-X.Y.Z branch (named after the same string as the tag this run
-# will create — see truefoundry/helm-charts' release-public-truefoundry.yaml),
-# not from main. That workflow only fast-forwards main for the current
-# latest shipped line. The "Exclude branch-released charts from main" step
-# below makes that exclusion robust on the main trigger regardless of what
-# main's Chart.yaml happens to contain; the truefoundry-* trigger relies on
+# release/truefoundry-X.Y.Z branch (the release/ prefix keeps the branch out
+# of chart-releaser's identically-named tag namespace — see
+# truefoundry/helm-charts' release-public-truefoundry.yaml), not from main.
+# That workflow only fast-forwards main for the current latest shipped line.
+# The "Exclude branch-released charts from main" step below makes that
+# exclusion robust on the main trigger regardless of what main's Chart.yaml
+# happens to contain; the release/truefoundry-* trigger relies on
 # chart-releaser's own CR_SKIP_EXISTING to no-op on any OTHER chart that
 # hasn't changed there.
 name: Release Charts
@@ -13,7 +14,7 @@ on:
   push:
     branches:
       - main
-      - "truefoundry-[0-9]*"
+      - "release/truefoundry-[0-9]*"
   workflow_dispatch:
 
 jobs:
