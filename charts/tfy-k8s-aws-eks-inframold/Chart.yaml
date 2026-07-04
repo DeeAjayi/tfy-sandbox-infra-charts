@@ -1,4 +1,4 @@
 apiVersion: v2
 name: tfy-k8s-aws-eks-inframold
-version: 0.1.0
+version: 0.1.1
 description: "Sandbox stand-in for the AWS EKS inframold superchart"
