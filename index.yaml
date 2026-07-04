@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   tfy-k8s-aws-eks-inframold:
   - apiVersion: v2
+    created: "2026-07-04T22:12:44.033270806Z"
+    description: Sandbox stand-in for the AWS EKS inframold superchart
+    digest: f8dd69c164d6618f6485abfad3f164e4c8515f37337a8b994928ac716632fd61
+    name: tfy-k8s-aws-eks-inframold
+    urls:
+    - https://github.com/DeeAjayi/tfy-sandbox-infra-charts/releases/download/tfy-k8s-aws-eks-inframold-0.1.1/tfy-k8s-aws-eks-inframold-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2026-07-04T21:53:55.720415307Z"
     description: Sandbox stand-in for the AWS EKS inframold superchart
     digest: ee50de182bfe6ad5476128e431592c3ecac1792c8d74c394283131a98bb6d5a1
@@ -9,4 +17,4 @@ entries:
     urls:
     - https://github.com/DeeAjayi/tfy-sandbox-infra-charts/releases/download/tfy-k8s-aws-eks-inframold-0.1.0/tfy-k8s-aws-eks-inframold-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-04T21:53:55.720420637Z"
+generated: "2026-07-04T22:12:44.033278992Z"
