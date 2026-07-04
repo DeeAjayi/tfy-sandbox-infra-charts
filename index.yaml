@@ -25,4 +25,31 @@ entries:
     urls:
     - https://github.com/DeeAjayi/tfy-sandbox-infra-charts/releases/download/tfy-k8s-aws-eks-inframold-0.1.0/tfy-k8s-aws-eks-inframold-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-04T22:22:30.015571807Z"
+  tfy-llm-gateway:
+  - apiVersion: v2
+    created: "2026-07-04T23:18:24.026515702Z"
+    description: Sandbox stand-in for the tfy-llm-gateway chart
+    digest: e5b201f5534e1194bcb4d03123ad656b57b310c3e863e9547129b7c34ed25f1f
+    maintainers:
+    - name: sandbox
+    name: tfy-llm-gateway
+    urls:
+    - https://github.com/DeeAjayi/tfy-sandbox-infra-charts/releases/download/tfy-llm-gateway-0.2.0/tfy-llm-gateway-0.2.0.tgz
+    version: 0.2.0
+  truefoundry:
+  - apiVersion: v2
+    created: "2026-07-04T23:18:24.186629004Z"
+    dependencies:
+    - condition: tfy-llm-gateway.enabled
+      name: tfy-llm-gateway
+      repository: oci://ghcr.io/deeajayi/tfy-sandbox-helm
+      version: 0.2.0
+    description: Sandbox stand-in for the TrueFoundry umbrella chart
+    digest: 896e8ec866725d3184d9c2e7cc189977c56feb9dc59c54955b556f7dab23954f
+    maintainers:
+    - name: sandbox
+    name: truefoundry
+    urls:
+    - https://github.com/DeeAjayi/tfy-sandbox-infra-charts/releases/download/truefoundry-0.2.0/truefoundry-0.2.0.tgz
+    version: 0.2.0
+generated: "2026-07-04T23:18:24.186641007Z"
