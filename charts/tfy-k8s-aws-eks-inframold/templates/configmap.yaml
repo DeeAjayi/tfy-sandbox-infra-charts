@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: tfy-k8s-aws-eks-inframold
 data:
-  chartVersion: "0.1.2"
+  chartVersion: "0.1.3"
