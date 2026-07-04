@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   tfy-llm-gateway:
   - apiVersion: v2
+    created: "2026-07-04T16:45:56.334505975Z"
+    description: Sandbox stand-in for the tfy-llm-gateway chart
+    digest: 5db385271c9513ca70529a23a10f1dbc14019be8a810e15fe2703cba94b4b468
+    maintainers:
+    - name: sandbox
+    name: tfy-llm-gateway
+    urls:
+    - https://github.com/DeeAjayi/tfy-sandbox-infra-charts/releases/download/tfy-llm-gateway-0.5.0/tfy-llm-gateway-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
     created: "2026-07-04T12:28:52.833484569Z"
     description: Sandbox stand-in for the tfy-llm-gateway chart
     digest: ded115070a4cb5bd50d165802f469818dbaf085640f4795408d201d3c63a3d39
@@ -42,6 +52,21 @@ entries:
     - https://github.com/DeeAjayi/tfy-sandbox-infra-charts/releases/download/tfy-llm-gateway-0.1.1/tfy-llm-gateway-0.1.1.tgz
     version: 0.1.1
   truefoundry:
+  - apiVersion: v2
+    created: "2026-07-04T16:45:56.436207492Z"
+    dependencies:
+    - condition: tfy-llm-gateway.enabled
+      name: tfy-llm-gateway
+      repository: oci://ghcr.io/deeajayi/tfy-sandbox-helm
+      version: 0.5.0
+    description: Sandbox stand-in for the TrueFoundry umbrella chart
+    digest: e93c00e19baa43a93f6cd662216e52bcf537d00ab13f3487674659ca395119a8
+    maintainers:
+    - name: sandbox
+    name: truefoundry
+    urls:
+    - https://github.com/DeeAjayi/tfy-sandbox-infra-charts/releases/download/truefoundry-0.5.0/truefoundry-0.5.0.tgz
+    version: 0.5.0
   - apiVersion: v2
     created: "2026-07-04T14:39:06.053515214Z"
     dependencies:
@@ -207,4 +232,4 @@ entries:
     urls:
     - https://github.com/DeeAjayi/tfy-sandbox-infra-charts/releases/download/truefoundry-0.0.96/truefoundry-0.0.96.tgz
     version: 0.0.96
-generated: "2026-07-04T16:36:12.265853443Z"
+generated: "2026-07-04T16:45:56.436271382Z"
