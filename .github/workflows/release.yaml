@@ -47,6 +47,23 @@ jobs:
         with:
           version: v3.17.3
 
+      # Chart dependencies resolved from an OCI registry (e.g. truefoundry's
+      # tfy-llm-gateway dep) may live in a registry that doesn't allow
+      # anonymous pulls (fork/sandbox registries; prod's is public). Log in
+      # when creds are configured so chart-releaser's dependency resolution
+      # works either way.
+      - name: Helm registry login (for OCI chart dependencies)
+        env:
+          REGISTRY_HOST: ${{ vars.TRUEFOUNDRY_ARTIFACTORY_REGISTRY_URL }}
+          REGISTRY_USER: ${{ secrets.TRUEFOUNDRY_ARTIFACTORY_PUBLIC_USERNAME }}
+          REGISTRY_PASS: ${{ secrets.TRUEFOUNDRY_ARTIFACTORY_PUBLIC_PASSWORD }}
+        run: |
+          if [ -n "$REGISTRY_HOST" ] && [ -n "$REGISTRY_USER" ]; then
+            helm registry login "$REGISTRY_HOST" -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+          else
+            echo "Registry host/creds unset; relying on anonymous pulls."
+          fi
+
       - name: Add Helm dependencies
         run: |
           helm repo add grafana https://grafana.github.io/helm-charts
