@@ -84,6 +84,29 @@ jobs:
         env:
           CR_TOKEN: '${{ secrets.TRUEFOUNDRY_HELM_TOKEN }}'
           CR_SKIP_EXISTING: true
+          # Never let a newly-created release take the repo's "Latest" badge
+          # implicitly — GitHub defaults it to the newest-CREATED release, so
+          # an older-line hotfix (e.g. truefoundry-0.140.6 shipped after
+          # 0.148.0) would steal the badge from the actual newest version.
+          # The step below re-asserts the correct one deterministically.
+          CR_MAKE_RELEASE_LATEST: false
+
+      # Deterministically point the repo's "Latest" badge at the
+      # highest-semver FINAL truefoundry release, regardless of creation
+      # order (chart-releaser above never sets it).
+      - name: Mark highest truefoundry release as Latest
+        env:
+          GH_TOKEN: '${{ secrets.TRUEFOUNDRY_HELM_TOKEN }}'
+        run: |
+          HIGHEST=$(gh api "repos/${GITHUB_REPOSITORY}/releases" --paginate --jq '.[].tag_name' \
+            | grep -E '^truefoundry-[0-9]+\.[0-9]+\.[0-9]+$' \
+            | sed 's/truefoundry-//' | sort -V | tail -1)
+          if [ -z "$HIGHEST" ]; then
+            echo "No final truefoundry-X.Y.Z release found; leaving Latest untouched."
+            exit 0
+          fi
+          RID=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/truefoundry-${HIGHEST}" --jq .id)
+          gh api -X PATCH "repos/${GITHUB_REPOSITORY}/releases/${RID}" -f make_latest=true --jq '"Latest -> " + .tag_name'
 
       - name: Checkout to gh-pages
         uses: actions/checkout@v4
