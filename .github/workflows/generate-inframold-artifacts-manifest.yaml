@@ -1,0 +1,22 @@
+# Sandbox stand-in for infra-charts' "Generate Inframold Charts Artifacts
+# Manifest" workflow. merge-inframold.yml (release tail) waits for a
+# check-run with this JOB name to succeed on the inframold-<IV> PR head
+# before merging — the job name below is the contract.
+name: Generate Inframold Charts Artifacts Manifest
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'charts/tfy-k8s-*/**'
+
+jobs:
+  generate:
+    name: Generate Inframold Charts Artifacts Manifest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "sandbox artifacts manifest — no-op success"
+          sleep 5
