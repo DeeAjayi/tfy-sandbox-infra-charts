@@ -3,4 +3,4 @@ dependencies:
   repository: oci://ghcr.io/deeajayi/tfy-sandbox-helm
   version: 0.3.0
 digest: sha256:2fd23a7ffec654d221b464d27342eb8dbf928ab329c50c60c389c2bcdc9200d9
-generated: "2026-07-04T12:28:13.378378071Z"
+generated: "2026-07-04T12:32:46.847735971Z"
