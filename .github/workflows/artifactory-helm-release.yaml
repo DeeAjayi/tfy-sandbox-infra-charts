@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
 
@@ -36,7 +36,7 @@ jobs:
         rm -rf charts/truefoundry charts/tfy-llm-gateway
 
     - name: Set up Helm
-      uses: azure/setup-helm@v4.3.0
+      uses: azure/setup-helm@v5
       with:
         version: v3.17.3
 
@@ -57,7 +57,7 @@ jobs:
       run: |
         helm registry login ${{ env.ARTIFACTORY_REGISTRY }} -u ${{ env.ARTIFACTORY_USERNAME }} -p ${{ env.ARTIFACTORY_PASSWORD }}
     
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: '3.11'
 
