@@ -1,0 +1,80 @@
+# Sandbox stand-in for prod infra-charts' update-artifacts.yml. Mirrors the
+# CONTRACT merge-inframold.yml depends on, including the awkward parts:
+#   - same workflow FILE name (resolved via the Actions runs API by head SHA)
+#   - same 3-job shape: changes -> update-artifacts -> artifact-generation-gate
+#     (check-run names are JOB names — merge-inframold must not rely on them)
+#   - update-artifacts COMMITS a regenerated artifacts-manifest.json back to
+#     the PR branch with a PAT, moving the PR head and re-triggering this
+#     workflow on the new head (second run: no diff, no push, loop terminates)
+name: Generate Inframold Charts Artifacts Manifest
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      relevant: ${{ steps.filter.outputs.relevant }}
+    steps:
+      - name: Detect Relevant Path Changes
+        uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            relevant:
+              - '.github/workflows/update-artifacts.yml'
+              - 'charts/tfy-k8s-aws-eks-inframold/**'
+
+  update-artifacts:
+    needs: changes
+    if: needs.changes.outputs.relevant == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          # PAT, not GITHUB_TOKEN: the manifest commit must re-trigger this
+          # workflow on the new head, or the PR's latest commit would carry
+          # no artifacts run and merge-inframold could never gate on it.
+          token: ${{ secrets.TF_GITHUB_CI_ADMIN_TOKEN }}
+
+      - name: Generate Artifacts Manifest
+        run: |
+          set -euo pipefail
+          CHART=charts/tfy-k8s-aws-eks-inframold
+          VERSION=$(grep '^version:' "$CHART/Chart.yaml" | awk '{print $2}')
+          jq -n --arg v "$VERSION" \
+            '{chart: "tfy-k8s-aws-eks-inframold", version: $v, artifacts: ["sandbox-image:\($v)"]}' \
+            > "$CHART/artifacts-manifest.json"
+          cat "$CHART/artifacts-manifest.json"
+
+      - name: Commit & Push Updates
+        run: |
+          set -euo pipefail
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git add .
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -am "[CI] Update charts artifacts manifest files" --signoff
+            git pull origin --rebase
+            git push
+          fi
+
+  artifact-generation-gate:
+    needs: [ changes, update-artifacts ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Required jobs
+        run: |
+          if [ "${{ needs.changes.result }}" != "success" ]; then exit 1; fi
+          # update-artifacts is allowed to be skipped (irrelevant paths)
+          if [ "${{ needs.update-artifacts.result }}" = "failure" ]; then exit 1; fi
+          echo "gate passed"
