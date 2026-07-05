@@ -1,7 +1,7 @@
 {
   "chart": "tfy-k8s-aws-eks-inframold",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "artifacts": [
-    "sandbox-image:0.1.4"
+    "sandbox-image:0.1.5"
   ]
 }
